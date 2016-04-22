@@ -39,3 +39,9 @@ type LocalBusiness struct {
 	ReviewCount     int
 	Reviews         []Review
 }
+
+// ReviewFilter defines filter data to filter reviews by.
+type ReviewFilter struct {
+	Type  string `json:"type"`
+	Value string `json:"value"`
+}

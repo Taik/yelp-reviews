@@ -23,6 +23,13 @@
 			"notests": true
 		},
 		{
+			"importpath": "github.com/hashicorp/golang-lru",
+			"repository": "https://github.com/hashicorp/golang-lru",
+			"revision": "a0d98a5f288019575c6d1f4bb1573fef2d1fcdc4",
+			"branch": "master",
+			"notests": true
+		},
+		{
 			"importpath": "github.com/klauspost/compress/flate",
 			"repository": "https://github.com/klauspost/compress",
 			"revision": "14eb9c4951195779ecfbec34431a976de7335b0a",

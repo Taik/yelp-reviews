@@ -3,57 +3,62 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
-	"os"
 
-	"github.com/gorilla/handlers"
-	"github.com/rs/xhandler"
-	"github.com/rs/xmux"
-	"golang.org/x/net/context"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/engine/standard"
+	"github.com/labstack/echo/middleware"
+
+	"github.com/Taik/yelp-reviews/yelp"
 )
 
-type yelpReviewFilter struct {
-	Type  string
-	Value string
-}
-
 type yelpReviewRequest struct {
-	URL     string
-	filters []yelpReviewFilter
+	URL     string              `json:"url"`
+	Filters []yelp.ReviewFilter `json:"filters"`
 }
 
-func yelpReviewHandle(ctx context.Context, w http.ResponseWriter, req *http.Request) {
-	decoder := json.NewDecoder(req.Body)
-	request := &yelpReviewRequest{}
+type yelpReviewResponse struct {
+	Status      string `json:"status"`
+	Message     string `json:"msg,omitempty"`
+	Rating      string `json:"rating"`
+	ReviewCount int    `json:"review_count"`
+}
 
-	err := decoder.Decode(request)
-	if err != nil {
-		fmt.Fprintf(w, `{"status": "ERROR", "msg": "%s"}`, err)
-		return
+func yelpReviewHandle(c echo.Context) (err error) {
+	decoder := json.NewDecoder(c.Request().Body())
+	request := &yelpReviewRequest{}
+	resp := &yelpReviewResponse{
+		Status: "OK",
 	}
 
-	fmt.Printf("%v\n", request)
+	err = decoder.Decode(request)
+	if err != nil {
+		resp.Status = "ERROR"
+		resp.Message = err.Error()
+		return c.JSON(http.StatusBadRequest, resp)
+	}
 
-	fmt.Fprintf(w, `{"status": "OK", "msg": "It works!"}`)
+	b, err := yelp.NewBusiness(request.URL)
+	if err != nil {
+		resp.Status = "ERROR"
+		resp.Message = err.Error()
+		return c.JSON(http.StatusBadRequest, resp)
+	}
+
+	b.FetchReviews()
+	b.FilterReviews(request.Filters)
+
+	resp.Rating = fmt.Sprintf("%.2f", b.CalculateRating())
+	resp.ReviewCount = len(b.Reviews)
+
+	return c.JSON(http.StatusOK, resp)
 }
 
 func main() {
-	c := xhandler.Chain{}
+	e := echo.New()
+	e.Use(middleware.Recover(), middleware.Logger(), middleware.Gzip())
 
-	c.UseC(xhandler.CloseHandler)
-	c.Use(handlers.CompressHandler)
-	c.Use(func(next http.Handler) http.Handler {
-		return handlers.ContentTypeHandler(next, "application/json")
-	})
-	c.Use(func(next http.Handler) http.Handler {
-		return handlers.LoggingHandler(os.Stdout, next)
-	})
+	e.POST("/", yelpReviewHandle)
 
-	mux := xmux.New()
-	mux.POST("/", xhandler.HandlerFuncC(yelpReviewHandle))
-
-	if err := http.ListenAndServe(":1234", c.Handler(mux)); err != nil {
-		log.Fatal(err)
-	}
+	e.Run(standard.New(":1234"))
 }
