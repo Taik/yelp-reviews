@@ -1,0 +1,9 @@
+package: github.com/Taik/yelp-reviews
+import:
+- package: github.com/PuerkitoBio/goquery
+- package: github.com/hashicorp/golang-lru
+- package: github.com/labstack/echo
+  subpackages:
+  - engine/standard
+  - middleware
+- package: github.com/namsral/microdata

@@ -1,0 +1,60 @@
+hash: 9a17a5a911efa203c4c513e827cf96c23f392daf926a4f112d13bb28c1fd3744
+updated: 2016-04-22T13:52:20.403628351-04:00
+imports:
+- name: github.com/andybalholm/cascadia
+  version: 3ad29d1ad1c4f2023e355603324348cf1f4b2d48
+- name: github.com/hashicorp/golang-lru
+  version: a0d98a5f288019575c6d1f4bb1573fef2d1fcdc4
+  subpackages:
+  - simplelru
+- name: github.com/labstack/echo
+  version: c830734fd531a6bab6f7728bb197e6629d1faf5c
+  subpackages:
+  - engine/standard
+  - middleware
+  - engine
+- name: github.com/labstack/gommon
+  version: f8343700e8769e645b5f9949ec2e3a69f9fd71eb
+  subpackages:
+  - log
+  - color
+- name: github.com/mattn/go-colorable
+  version: bc69d6cebca8dd5675346a34a1c545b67dc74d5e
+- name: github.com/mattn/go-isatty
+  version: 56b76bdf51f7708750eac80fa38b952bb9f32639
+- name: github.com/namsral/microdata
+  version: 310b1f6ce5959009f149c1d5bd209deb8f267ea9
+- name: github.com/PuerkitoBio/goquery
+  version: 2e29ea41f0d13f4a303c75553f4eeadddc7a4c56
+- name: github.com/valyala/fasttemplate
+  version: 3b874956e03f1636d171bda64b130f9135f42cff
+- name: golang.org/x/net
+  version: 815d315ead425c4365077d904a2331ee9e179820
+  subpackages:
+  - context
+  - html
+  - html/atom
+  - html/charset
+- name: golang.org/x/sys
+  version: f64b50fbea64174967a8882830d621a18ee1548e
+  subpackages:
+  - unix
+- name: golang.org/x/text
+  version: 3100578f0f8093e37883ba48c9187fe51367ad05
+  subpackages:
+  - encoding
+  - encoding/charmap
+  - encoding/htmlindex
+  - transform
+  - encoding/internal/identifier
+  - encoding/internal
+  - encoding/japanese
+  - encoding/korean
+  - encoding/simplifiedchinese
+  - encoding/traditionalchinese
+  - encoding/unicode
+  - language
+  - internal/utf8internal
+  - runes
+  - internal/tag
+devImports: []
