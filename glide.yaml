@@ -7,3 +7,4 @@ import:
   - engine/standard
   - middleware
 - package: github.com/namsral/microdata
+- package: github.com/cathalgarvey/sqrape
