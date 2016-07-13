@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
@@ -60,5 +61,9 @@ func main() {
 
 	e.POST("/", yelpReviewHandle)
 
-	e.Run(standard.New(":1234"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "1234"
+	}
+	e.Run(standard.New(":" + port))
 }
